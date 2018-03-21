@@ -14,7 +14,6 @@
 function! s:gtags_add(file) abort
   if filereadable(a:file)
     let l:cmd = 'silent! cs add ' . a:file . ' ' . gen_tags#find_project_root()
-    echo l:cmd
     exec l:cmd
     silent! doautocmd User GenTags#GtagsLoaded
   endif
@@ -130,6 +129,8 @@ function! gen_tags#gtags#init() abort
 
   set cscopetag
   set cscopeprg=gtags-cscope
+
+  set nocscoperelative
 
   "Hotkey for cscope
   if empty(g:gen_tags#gtags_split)

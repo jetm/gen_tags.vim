@@ -83,11 +83,12 @@ function! s:ctags_gen(filename, dir) abort
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, gen_tags#find_project_root()]
   else
     let l:file = a:filename
-    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, a:dir]
   endif
+
+  " Hack
+  let l:cmd += [g:gen_tags#ctags_opts, '-f', l:file]
 
   call gen_tags#system_async(l:cmd)
 
@@ -275,7 +276,7 @@ function! s:ctags_update(file) abort
   let l:dir = gen_tags#get_db_dir()
   let l:file = l:dir . '/' . s:ctags_db
 
-  let l:cmd = [g:gen_tags#ctags_bin, '-u', '-f', l:file, g:gen_tags#ctags_opts,
+  let l:cmd = [g:gen_tags#ctags_bin, '-u', '-f', l:file,
         \ '-a', gen_tags#find_project_root(), '/', a:file]
 
   call gen_tags#system_async(l:cmd)
